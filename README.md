@@ -61,29 +61,7 @@ flowchart LR
     EVAL --> AGENT
 ```
 
-### 问答流程
 
-```mermaid
-sequenceDiagram
-    participant U as 用户
-    participant A as Agent
-    participant T as Tools
-    participant R as RAG
-    participant DB as pgvector
-    participant L as LLM
-
-    U->>A: 问题
-    A->>L: 历史 + 问题 + 工具定义
-    L-->>A: Tool Call
-    A->>T: search_library(query)
-    T->>R: Embedding + Top-K
-    R->>DB: embedding <=> query
-    DB-->>R: 原文片段 + 页码
-    R-->>T: 证据 + citation_index
-    T-->>A: Tool Result
-    A->>L: 证据上下文
-    L-->>U: 带 [n] 引用的回答
-```
 
 ### Agent 工具
 
