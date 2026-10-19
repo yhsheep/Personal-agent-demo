@@ -1,0 +1,578 @@
+{
+  "grid": {
+    "id": "0a62ae3551bf4eafae3c6017001cc238",
+    "name": "Chunk x Top-K grid",
+    "kind": "retrieval_grid",
+    "status": "completed",
+    "dataset": "dataset.jsonl",
+    "config": {
+      "limit": 25,
+      "top_k": 6,
+      "prompt_variant": "citation_strict",
+      "chunk_sizes": [
+        300,
+        500,
+        700
+      ],
+      "overlaps": [
+        50,
+        100
+      ],
+      "top_ks": [
+        3,
+        5,
+        8
+      ]
+    },
+    "metrics": {
+      "best_config": {
+        "chunk_size": 700,
+        "overlap": 50,
+        "top_k": 8,
+        "recall_at_k": 1.0,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9405,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      "config_count": 18,
+      "chunk_sizes": [
+        300,
+        500,
+        700
+      ],
+      "overlaps": [
+        50,
+        100
+      ],
+      "top_ks": [
+        3,
+        5,
+        8
+      ],
+      "case_count": 25,
+      "reused_corpus_papers": 10
+    },
+    "error_message": "",
+    "llm_provider": "离线演示模型",
+    "embedding_model": "local-hash-ngram",
+    "case_count": 25,
+    "created_at": "2026-10-19T16:09:33.620809+00:00",
+    "completed_at": "2026-10-19T16:09:34.301755+00:00",
+    "summary": "最佳组合：chunk=700 overlap=50 Top-K=8，Recall@K=1.0",
+    "details": [
+      {
+        "chunk_size": 700,
+        "overlap": 50,
+        "top_k": 8,
+        "recall_at_k": 1.0,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9405,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      {
+        "chunk_size": 700,
+        "overlap": 100,
+        "top_k": 8,
+        "recall_at_k": 1.0,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9405,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 100,
+        "top_k": 5,
+        "recall_at_k": 0.98,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9305,
+        "chunk_count": 100,
+        "avg_chunks_per_paper": 10.0,
+        "retrieval_latency_ms": 40
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 100,
+        "top_k": 8,
+        "recall_at_k": 0.98,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9305,
+        "chunk_count": 100,
+        "avg_chunks_per_paper": 10.0,
+        "retrieval_latency_ms": 39
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 100,
+        "top_k": 8,
+        "recall_at_k": 0.98,
+        "mrr": 0.9133,
+        "ndcg_at_k": 0.9163,
+        "chunk_count": 59,
+        "avg_chunks_per_paper": 5.9,
+        "retrieval_latency_ms": 27
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 50,
+        "top_k": 8,
+        "recall_at_k": 0.98,
+        "mrr": 0.9,
+        "ndcg_at_k": 0.905,
+        "chunk_count": 54,
+        "avg_chunks_per_paper": 5.4,
+        "retrieval_latency_ms": 26
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 50,
+        "top_k": 3,
+        "recall_at_k": 0.9667,
+        "mrr": 0.94,
+        "ndcg_at_k": 0.9362,
+        "chunk_count": 89,
+        "avg_chunks_per_paper": 8.9,
+        "retrieval_latency_ms": 50
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 50,
+        "top_k": 5,
+        "recall_at_k": 0.9667,
+        "mrr": 0.94,
+        "ndcg_at_k": 0.9362,
+        "chunk_count": 89,
+        "avg_chunks_per_paper": 8.9,
+        "retrieval_latency_ms": 34
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 50,
+        "top_k": 8,
+        "recall_at_k": 0.9667,
+        "mrr": 0.94,
+        "ndcg_at_k": 0.9362,
+        "chunk_count": 89,
+        "avg_chunks_per_paper": 8.9,
+        "retrieval_latency_ms": 35
+      },
+      {
+        "chunk_size": 300,
+        "overlap": 100,
+        "top_k": 3,
+        "recall_at_k": 0.9667,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.9224,
+        "chunk_count": 100,
+        "avg_chunks_per_paper": 10.0,
+        "retrieval_latency_ms": 38
+      },
+      {
+        "chunk_size": 700,
+        "overlap": 50,
+        "top_k": 5,
+        "recall_at_k": 0.9667,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.926,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      {
+        "chunk_size": 700,
+        "overlap": 100,
+        "top_k": 5,
+        "recall_at_k": 0.9667,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.926,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 100,
+        "top_k": 5,
+        "recall_at_k": 0.9667,
+        "mrr": 0.9133,
+        "ndcg_at_k": 0.91,
+        "chunk_count": 59,
+        "avg_chunks_per_paper": 5.9,
+        "retrieval_latency_ms": 27
+      },
+      {
+        "chunk_size": 700,
+        "overlap": 50,
+        "top_k": 3,
+        "recall_at_k": 0.9533,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.918,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 22
+      },
+      {
+        "chunk_size": 700,
+        "overlap": 100,
+        "top_k": 3,
+        "recall_at_k": 0.9533,
+        "mrr": 0.9333,
+        "ndcg_at_k": 0.918,
+        "chunk_count": 42,
+        "avg_chunks_per_paper": 4.2,
+        "retrieval_latency_ms": 21
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 50,
+        "top_k": 5,
+        "recall_at_k": 0.9533,
+        "mrr": 0.9,
+        "ndcg_at_k": 0.8924,
+        "chunk_count": 54,
+        "avg_chunks_per_paper": 5.4,
+        "retrieval_latency_ms": 26
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 100,
+        "top_k": 3,
+        "recall_at_k": 0.9333,
+        "mrr": 0.9133,
+        "ndcg_at_k": 0.8914,
+        "chunk_count": 59,
+        "avg_chunks_per_paper": 5.9,
+        "retrieval_latency_ms": 27
+      },
+      {
+        "chunk_size": 500,
+        "overlap": 50,
+        "top_k": 3,
+        "recall_at_k": 0.9333,
+        "mrr": 0.9,
+        "ndcg_at_k": 0.8818,
+        "chunk_count": 54,
+        "avg_chunks_per_paper": 5.4,
+        "retrieval_latency_ms": 26
+      }
+    ]
+  },
+  "prompt": {
+    "id": "9a91cd065a4749feb138f4c9ea89abc0",
+    "name": "Prompt comparison",
+    "kind": "prompt_grid",
+    "status": "completed",
+    "dataset": "dataset.jsonl",
+    "config": {
+      "limit": 10,
+      "top_k": 6,
+      "prompt_variant": "citation_strict",
+      "chunk_sizes": [
+        300,
+        500,
+        700
+      ],
+      "overlaps": [
+        50,
+        100
+      ],
+      "top_ks": [
+        3,
+        5,
+        8
+      ]
+    },
+    "metrics": {
+      "best_variant": {
+        "variant": "citation_strict",
+        "label": "严格引用",
+        "task_success_rate": 1.0,
+        "tool_calling_accuracy": 1.0,
+        "tool_exact_match": 1.0,
+        "tool_f1": 1.0,
+        "citation_hit_rate": 1.0,
+        "agent_latency_ms": 3.7,
+        "avg_tokens": 0.0
+      },
+      "variants": [
+        {
+          "variant": "citation_strict",
+          "label": "严格引用",
+          "task_success_rate": 1.0,
+          "tool_calling_accuracy": 1.0,
+          "tool_exact_match": 1.0,
+          "tool_f1": 1.0,
+          "citation_hit_rate": 1.0,
+          "agent_latency_ms": 3.7,
+          "avg_tokens": 0.0
+        },
+        {
+          "variant": "analyst",
+          "label": "深度分析",
+          "task_success_rate": 1.0,
+          "tool_calling_accuracy": 1.0,
+          "tool_exact_match": 1.0,
+          "tool_f1": 1.0,
+          "citation_hit_rate": 1.0,
+          "agent_latency_ms": 3.7,
+          "avg_tokens": 0.0
+        },
+        {
+          "variant": "concise",
+          "label": "简洁回答",
+          "task_success_rate": 1.0,
+          "tool_calling_accuracy": 1.0,
+          "tool_exact_match": 1.0,
+          "tool_f1": 1.0,
+          "citation_hit_rate": 1.0,
+          "agent_latency_ms": 3.5,
+          "avg_tokens": 0.0
+        }
+      ],
+      "case_count": 10,
+      "top_k": 6
+    },
+    "error_message": "",
+    "llm_provider": "离线演示模型",
+    "embedding_model": "local-hash-ngram",
+    "case_count": 10,
+    "created_at": "2026-10-19T16:09:34.629280+00:00",
+    "completed_at": "2026-10-19T16:09:34.770215+00:00",
+    "summary": "最佳 Prompt：严格引用，任务成功率=1.0，工具准确率=1.0",
+    "details": [
+      {
+        "variant": "citation_strict",
+        "label": "严格引用",
+        "cases": [
+          {
+            "id": "q01",
+            "question": "RAG 原始论文中，生成器使用的是什么模型？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q02",
+            "question": "RAG 的检索器采用了什么方法？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q03",
+            "question": "RAG 论文提出了哪两种生成形式？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q04",
+            "question": "ReAct 是如何把推理和行动结合起来的？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q05",
+            "question": "ReAct 在哪些任务或数据集上进行了评测？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q06",
+            "question": "Toolformer 用什么标准判断是否保留一个 API 调用？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q07",
+            "question": "Toolformer 使用了哪些外部工具或 API？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q08",
+            "question": "Self-RAG 使用了哪几种反思 token？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q09",
+            "question": "Self-RAG 与原始 RAG 的核心区别是什么？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q10",
+            "question": "DPR 在训练时如何构造负样本？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          }
+        ]
+      },
+      {
+        "variant": "analyst",
+        "label": "深度分析",
+        "cases": [
+          {
+            "id": "q01",
+            "question": "RAG 原始论文中，生成器使用的是什么模型？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q02",
+            "question": "RAG 的检索器采用了什么方法？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q03",
+            "question": "RAG 论文提出了哪两种生成形式？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 5
+          },
+          {
+            "id": "q04",
+            "question": "ReAct 是如何把推理和行动结合起来的？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q05",
+            "question": "ReAct 在哪些任务或数据集上进行了评测？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q06",
+            "question": "Toolformer 用什么标准判断是否保留一个 API 调用？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q07",
+            "question": "Toolformer 使用了哪些外部工具或 API？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q08",
+            "question": "Self-RAG 使用了哪几种反思 token？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q09",
+            "question": "Self-RAG 与原始 RAG 的核心区别是什么？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q10",
+            "question": "DPR 在训练时如何构造负样本？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          }
+        ]
+      },
+      {
+        "variant": "concise",
+        "label": "简洁回答",
+        "cases": [
+          {
+            "id": "q01",
+            "question": "RAG 原始论文中，生成器使用的是什么模型？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 5
+          },
+          {
+            "id": "q02",
+            "question": "RAG 的检索器采用了什么方法？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q03",
+            "question": "RAG 论文提出了哪两种生成形式？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q04",
+            "question": "ReAct 是如何把推理和行动结合起来的？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q05",
+            "question": "ReAct 在哪些任务或数据集上进行了评测？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          },
+          {
+            "id": "q06",
+            "question": "Toolformer 用什么标准判断是否保留一个 API 调用？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q07",
+            "question": "Toolformer 使用了哪些外部工具或 API？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q08",
+            "question": "Self-RAG 使用了哪几种反思 token？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q09",
+            "question": "Self-RAG 与原始 RAG 的核心区别是什么？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 3
+          },
+          {
+            "id": "q10",
+            "question": "DPR 在训练时如何构造负样本？",
+            "success": true,
+            "tool_f1": 1.0,
+            "latency_ms": 4
+          }
+        ]
+      }
+    ]
+  }
+}

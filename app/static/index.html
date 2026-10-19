@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="文澜 WenLan：基于 FastAPI、Tool Calling 与 pgvector RAG 的本地文献问答与评测项目" />
+  <title>文澜 WenLan · 文献问答与 RAG 评测</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <path d="M3 10.7 12 3l9 7.7" />
+      <path d="M5.5 9.5V21h13V9.5" />
+      <path d="M9.5 21v-6h5v6" />
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z" />
+      <path d="M8 11h8M8 15h5" />
+    </symbol>
+    <symbol id="i-library" viewBox="0 0 24 24">
+      <path d="M4 4h5v16H4zM10.5 4h5v16h-5z" />
+      <path d="m17.2 5 3.3 14.2-4.8 1.1L12.4 6z" />
+    </symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" />
+      <path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z" />
+    </symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24">
+      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
+    </symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3" />
+      <path
+        d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21h-4v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3v-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1v4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14" />
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m4 4 17 8-17 8 3-8z" />
+      <path d="M7 12h14" />
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-4-4" />
+    </symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24">
+      <path d="M12 16V4m0 0L7 9m5-5 5 5" />
+      <path d="M4 15v5h16v-5" />
+    </symbol>
+    <symbol id="i-file" viewBox="0 0 24 24">
+      <path d="M6 2h8l4 4v16H6z" />
+      <path d="M14 2v5h5M9 12h6M9 16h6" />
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <path d="M4 7h16M9 3h6l1 4H8zM6 7l1 14h10l1-14M10 11v6M14 11v6" />
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M20 7v5h-5" />
+      <path d="M4 17v-5h5" />
+      <path d="M6.1 9a7 7 0 0 1 11.4-2L20 9M4 15l2.5 2a7 7 0 0 0 11.4-2" />
+    </symbol>
+    <symbol id="i-external" viewBox="0 0 24 24">
+      <path d="M14 4h6v6M20 4l-9 9" />
+      <path d="M18 13v7H4V6h7" />
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M21 13.2A8.5 8.5 0 1 1 10.8 3 7 7 0 0 0 21 13.2Z" />
+    </symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24">
+      <path
+        d="m12 3 1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" />
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m5 5 14 14M19 5 5 19" />
+    </symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24">
+      <path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-3 3-3-3z" />
+    </symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24">
+      <path d="M9 7H4v6h5v4H5M20 7h-5v6h5v4h-4" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m4 12 5 5L20 6" />
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24">
+      <rect x="6" y="6" width="12" height="12" rx="2" />
+    </symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24">
+      <circle cx="5" cy="12" r="2" />
+      <circle cx="12" cy="5" r="2" />
+      <circle cx="19" cy="12" r="2" />
+      <circle cx="12" cy="19" r="2" />
+      <path d="M6.5 10.5 10.5 6.5M13.5 6.5l4 4M17.5 13.5l-4 4M10.5 17.5l-4-4" />
+    </symbol>
+    <symbol id="i-book" viewBox="0 0 24 24">
+      <path d="M4 4h6a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4zM20 4h-6a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h6z" />
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 4v12m0 0 5-5m-5 5-5-5" />
+      <path d="M4 20h16" />
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </symbol>
+  </svg>
+
+  <div class="app-bg" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M6 25c5-10 10-10 14 0s9 10 14 0" />
+            <path d="M6 17c5-9 10-9 14 0s9 9 14 0" />
+            <circle cx="30.5" cy="10.5" r="2.2" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong>文澜</strong>
+          <span>WENLAN · LITERATURE RAG</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="主导航">
+        <button class="nav-item" data-route="overview"><svg class="icon">
+            <use href="#i-home" />
+          </svg><span>总览</span></button>
+        <button class="nav-item" data-route="chat"><svg class="icon">
+            <use href="#i-chat" />
+          </svg><span>科研问答</span><em class="nav-badge" id="nav-chat-badge">AI</em></button>
+        <button class="nav-item" data-route="library"><svg class="icon">
+            <use href="#i-library" />
+          </svg><span>文献库</span><em class="nav-count" id="nav-paper-count">0</em></button>
+        <button class="nav-item" data-route="discover"><svg class="icon">
+            <use href="#i-compass" />
+          </svg><span>找论文</span></button>
+        <button class="nav-item" data-route="evaluation"><svg class="icon">
+            <use href="#i-chart" />
+          </svg><span>评测实验</span></button>
+      </nav>
+
+      <div class="sidebar-label">快捷操作</div>
+      <div class="quick-actions">
+        <button class="quick-action" id="quick-upload"><svg class="icon">
+            <use href="#i-upload" />
+          </svg>上传 PDF</button>
+        <button class="quick-action" id="quick-seed"><svg class="icon">
+            <use href="#i-book" />
+          </svg>示例文献库</button>
+      </div>
+
+      <div class="sidebar-foot">
+        <div class="system-card" id="system-card">
+          <div class="system-row">
+            <span class="status-dot" id="status-dot"></span>
+            <strong id="system-mode">正在连接</strong>
+            <span class="mini-spinner"></span>
+          </div>
+          <p id="system-detail">检查数据库与模型配置…</p>
+          <div class="system-meta">
+            <span id="system-db">—</span>
+            <span id="system-embed">—</span>
+          </div>
+        </div>
+        <button class="settings-link" id="open-settings"><svg class="icon">
+            <use href="#i-settings" />
+          </svg>配置与说明<span class="kbd">⌘,</span></button>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button class="icon-btn mobile-only" id="menu-toggle" aria-label="菜单"><svg class="icon">
+            <use href="#i-menu" />
+          </svg></button>
+        <div class="page-heading">
+          <div class="eyebrow" id="page-eyebrow">HOME</div>
+          <h1 id="page-title">总览</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="demo-pill hidden" id="demo-pill" title="未配置 API Key，当前使用离线演示模型">
+            <svg class="icon">
+              <use href="#i-spark" />
+            </svg>离线演示模式
+          </div>
+          <div class="system-pill" id="top-status"><span class="status-dot"></span><span>就绪</span></div>
+          <button class="icon-btn" id="theme-toggle" aria-label="切换主题"><svg class="icon">
+              <use href="#i-sun" />
+            </svg></button>
+          <button class="avatar-btn" id="avatar-btn" aria-label="设置">文</button>
+        </div>
+      </header>
+
+      <main class="content" id="app-content">
+        <section class="page" data-page="overview" id="page-overview">
+          <div class="hero">
+            <div class="hero-copy">
+              <div class="hero-kicker"><span class="pulse-dot"></span>LOCAL-FIRST LITERATURE RAG</div>
+              <h2>让文献回答，<br /><span class="gradient-text">有迹可循。</span></h2>
+              <p>上传 PDF、建立索引，通过 Tool Calling 检索原文并生成带页码引用的回答。默认本地运行，也支持 OpenAI 兼容模型。</p>
+              <form class="ask-bar" id="overview-ask">
+                <svg class="icon">
+                  <use href="#i-spark" />
+                </svg>
+                <input id="overview-ask-input" type="text" placeholder="问一个科研问题，例如：RAG 论文中的生成器用了什么模型？"
+                  autocomplete="off" />
+                <button type="submit" class="ask-submit">问一下<svg class="icon">
+                    <use href="#i-arrow" />
+                  </svg></button>
+              </form>
+              <div class="suggestion-row">
+                <button class="chip" data-ask="Self-RAG 与原始 RAG 的核心区别是什么？">Self-RAG vs RAG</button>
+                <button class="chip" data-ask="ReAct 是如何把推理和行动结合起来的？">ReAct 机制</button>
+                <button class="chip" data-ask="帮我找几篇讨论检索增强生成（RAG）的论文。">找 RAG 论文</button>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="orbit orbit-1"></div>
+              <div class="orbit orbit-2"></div>
+              <div class="orbit orbit-3"></div>
+              <div class="core">
+                <svg class="icon">
+                  <use href="#i-flow" />
+                </svg>
+                <span>RAG</span>
+              </div>
+              <div class="node node-a">PDF</div>
+              <div class="node node-b">Embedding</div>
+              <div class="node node-c">Tool Calling</div>
+              <div class="node node-d">Citation</div>
+            </div>
+          </div>
+
+          <div class="stat-grid" id="overview-stats">
+            <div class="stat-card">
+              <div class="stat-icon"><svg class="icon">
+                  <use href="#i-library" />
+                </svg></div>
+              <div><span class="stat-label">文献总量</span><strong data-stat="papers">—</strong><small>篇论文已入库</small></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon amber"><svg class="icon">
+                  <use href="#i-flow" />
+                </svg></div>
+              <div><span class="stat-label">语义片段</span><strong data-stat="chunks">—</strong><small>个 chunk 已向量化</small>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon blue"><svg class="icon">
+                  <use href="#i-chat" />
+                </svg></div>
+              <div><span class="stat-label">科研会话</span><strong
+                  data-stat="conversations">—</strong><small>轮多轮研究对话</small></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon violet"><svg class="icon">
+                  <use href="#i-chart" />
+                </svg></div>
+              <div><span class="stat-label">评测任务</span><strong data-stat="evaluations">—</strong><small>次指标实验</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="overview-grid">
+            <div class="panel recent-panel">
+              <div class="panel-head">
+                <div><span class="panel-kicker">LIBRARY</span>
+                  <h3>最近入库</h3>
+                </div>
+                <button class="text-btn" data-route="library">查看全部<svg class="icon">
+                    <use href="#i-arrow" />
+                  </svg></button>
+              </div>
+              <div id="recent-papers" class="recent-list loading-block">
+                <div class="skeleton line"></div>
+                <div class="skeleton line"></div>
+                <div class="skeleton line"></div>
+              </div>
+            </div>
+            <div class="panel capability-panel">
+              <div class="panel-head">
+                <div><span class="panel-kicker">PIPELINE</span>
+                  <h3>从 PDF 到可追问的笔记</h3>
+                </div>
+              </div>
+              <div class="pipeline">
+                <div class="pipe-step"><span>01</span>
+                  <div><strong>找</strong>
+                    <p>本地文献 / 公开学术库</p>
+                  </div>
+                </div>
+                <div class="pipe-line"></div>
+                <div class="pipe-step"><span>02</span>
+                  <div><strong>读</strong>
+                    <p>PDF 解析 · 章节分块 · 向量化</p>
+                  </div>
+                </div>
+                <div class="pipe-line"></div>
+                <div class="pipe-step"><span>03</span>
+                  <div><strong>问</strong>
+                    <p>Tool Calling 多轮问答</p>
+                  </div>
+                </div>
+                <div class="pipe-line"></div>
+                <div class="pipe-step"><span>04</span>
+                  <div><strong>核</strong>
+                    <p>引用溯源 · 小规模评测</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel overview-eval">
+            <div class="panel-head">
+              <div><span class="panel-kicker">EVALUATION</span>
+                <h3>最近一次评测</h3>
+              </div>
+              <button class="text-btn" data-route="evaluation">进入实验室<svg class="icon">
+                  <use href="#i-arrow" />
+                </svg></button>
+            </div>
+            <div id="overview-eval-body" class="overview-eval-body">
+              <div class="empty-inline">还没有评测记录，运行一次评测来量化系统效果。</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="chat" id="page-chat">
+          <div class="chat-layout">
+            <aside class="conversation-pane">
+              <div class="conv-head">
+                <div><span class="panel-kicker">CONVERSATIONS</span>
+                  <h3>研究对话</h3>
+                </div>
+                <button class="icon-btn small" id="new-chat" title="新对话"><svg class="icon">
+                    <use href="#i-plus" />
+                  </svg></button>
+              </div>
+              <div class="conv-list" id="conversation-list">
+                <div class="skeleton line"></div>
+                <div class="skeleton line"></div>
+              </div>
+              <div class="conv-foot">
+                <div class="mini-stat"><span>模型</span><strong id="chat-model-label">—</strong></div>
+                <div class="mini-stat"><span>检索</span><strong id="chat-embed-label">—</strong></div>
+              </div>
+            </aside>
+
+            <section class="chat-main">
+              <div class="chat-header">
+                <div>
+                  <div class="chat-title-row">
+                    <h2 id="chat-title">新的科研对话</h2><span class="badge soft" id="chat-mode-badge">RAG</span>
+                  </div>
+                  <p id="chat-subtitle">基于本地文献库回答，并给出来源引用</p>
+                </div>
+                <div class="chat-actions">
+                  <label class="select-wrap compact">
+                    <span>Prompt</span>
+                    <select id="chat-prompt-variant">
+                      <option value="citation_strict">严格引用</option>
+                      <option value="analyst">深度分析</option>
+                      <option value="concise">简洁回答</option>
+                    </select>
+                  </label>
+                  <button class="icon-btn small" id="toggle-evidence" title="证据面板"><svg class="icon">
+                      <use href="#i-quote" />
+                    </svg></button>
+                </div>
+              </div>
+
+              <div class="chat-scroll" id="chat-scroll">
+                <div class="chat-empty" id="chat-empty">
+                  <div class="chat-empty-mark"><svg class="icon">
+                      <use href="#i-spark" />
+                    </svg></div>
+                  <h3>先从论文里找证据，再回答</h3>
+                  <p>我会先检索本地论文，再给出带页码与引用的回答。可以从这些问题开始：</p>
+                  <div class="starter-grid">
+                    <button class="starter" data-ask="RAG 原始论文中，生成器使用的是什么模型？"><span>RAG</span>生成器用了什么模型？</button>
+                    <button class="starter" data-ask="Self-RAG 使用了哪几种反思 token？"><span>Self-RAG</span>四种反思 token
+                      是什么？</button>
+                    <button class="starter" data-ask="ColBERT 的 late interaction 机制是怎样计算的？"><span>ColBERT</span>late
+                      interaction 如何计算？</button>
+                    <button class="starter" data-ask="帮我找关于长上下文语言模型如何使用上下文的论文。"><span>Search</span>找长上下文相关论文</button>
+                  </div>
+                </div>
+                <div class="message-list" id="message-list"></div>
+              </div>
+
+              <div class="composer-wrap">
+                <form class="composer" id="chat-form">
+                  <textarea id="chat-input" rows="1" placeholder="追问论文的方法、实验、结论，或让我帮你找论文…" maxlength="8000"></textarea>
+                  <div class="composer-side">
+                    <span class="composer-hint">Enter 发送 · Shift+Enter 换行</span>
+                    <button type="submit" class="send-btn" id="send-btn"><svg class="icon">
+                        <use href="#i-send" />
+                      </svg></button>
+                  </div>
+                </form>
+                <div class="composer-meta"><span id="composer-status">检索将基于当前文献库</span><span>答案由模型生成，重要结论请回看原文</span>
+                </div>
+              </div>
+            </section>
+
+            <aside class="evidence-pane" id="evidence-pane">
+              <div class="evidence-head">
+                <div><span class="panel-kicker">EVIDENCE</span>
+                  <h3>引用与证据</h3>
+                </div>
+                <span class="badge soft" id="evidence-count">0</span>
+              </div>
+              <div class="evidence-body" id="evidence-body">
+                <div class="evidence-empty">
+                  <svg class="icon">
+                    <use href="#i-quote" />
+                  </svg>
+                  <p>回答中引用的原文片段会显示在这里，可直达页码与 PDF。</p>
+                </div>
+              </div>
+              <div class="evidence-foot">
+                <div class="trace-head"><span>Tool trace</span><span id="trace-count">0 calls</span></div>
+                <div id="trace-list" class="trace-list">
+                  <p class="muted-small">本轮工具调用将在这里展示。</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page" data-page="library" id="page-library">
+          <div class="page-intro">
+            <div><span class="panel-kicker">KNOWLEDGE BASE</span>
+              <h2>文献库</h2>
+              <p>上传 PDF，系统会自动解析章节、切分文本、生成向量，并建立可引用的 RAG 索引。</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn ghost" id="seed-library"><svg class="icon">
+                  <use href="#i-book" />
+                </svg>导入示例库</button>
+              <button class="btn primary" id="upload-trigger"><svg class="icon">
+                  <use href="#i-upload" />
+                </svg>上传 PDF</button>
+            </div>
+          </div>
+
+          <div class="upload-zone" id="upload-zone">
+            <input type="file" id="pdf-input" accept="application/pdf,.pdf" hidden />
+            <div class="upload-icon"><svg class="icon">
+                <use href="#i-upload" />
+              </svg></div>
+            <div><strong>拖拽 PDF 到这里，或点击选择文件</strong>
+              <p>支持中英文论文 · 单文件 ≤ <span id="upload-limit">30</span>MB · 自动分块与向量化</p>
+            </div>
+            <span class="upload-pill">PDF</span>
+          </div>
+          <div class="upload-progress hidden" id="upload-progress">
+            <div class="progress-track">
+              <div class="progress-bar" id="upload-bar"></div>
+            </div>
+            <span id="upload-status">正在解析 PDF…</span>
+          </div>
+
+          <div class="panel table-panel">
+            <div class="table-toolbar">
+              <div class="search-field"><svg class="icon">
+                  <use href="#i-search" />
+                </svg><input id="library-search" placeholder="搜索标题、摘要或期刊…" /></div>
+              <div class="toolbar-right">
+                <span class="muted-small" id="library-count">— 篇文献</span>
+                <button class="btn ghost small" id="refresh-library"><svg class="icon">
+                    <use href="#i-refresh" />
+                  </svg>刷新</button>
+                <button class="btn ghost small" id="reindex-library"><svg class="icon">
+                    <use href="#i-flow" />
+                  </svg>重建索引</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>论文</th>
+                    <th>年份 / 来源</th>
+                    <th>索引状态</th>
+                    <th>Chunks</th>
+                    <th>页数</th>
+                    <th class="right">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="library-tbody">
+                  <tr>
+                    <td colspan="6">
+                      <div class="skeleton line"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-empty hidden" id="library-empty">
+              <div class="empty-mark"><svg class="icon">
+                  <use href="#i-library" />
+                </svg></div>
+              <h3>文献库还是空的</h3>
+              <p>导入示例论文，或上传你自己的 PDF 开始构建知识库。</p>
+              <button class="btn primary" id="empty-seed">导入 10 篇示例论文</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="discover" id="page-discover">
+          <div class="discover-hero">
+            <span class="panel-kicker">PAPER SEARCH</span>
+            <h2>去公开学术库，找组里需要的论文。</h2>
+            <p>聚合 OpenAlex、arXiv 与本地文献库。找到后可导入；有 PDF 时再建立 RAG 索引。</p>
+            <form class="discover-search" id="discover-form">
+              <svg class="icon">
+                <use href="#i-search" />
+              </svg>
+              <input id="discover-input" placeholder="输入主题、论文标题、作者，或英文关键词…" />
+              <div class="discover-filters">
+                <select id="discover-year">
+                  <option value="">不限年份</option>
+                  <option value="2024">2024 以后</option>
+                  <option value="2022">2022 以后</option>
+                  <option value="2020">2020 以后</option>
+                </select>
+                <select id="discover-scope">
+                  <option value="all">全部来源</option>
+                  <option value="local">仅本地库</option>
+                  <option value="online">仅在线</option>
+                </select>
+              </div>
+              <button class="btn primary" type="submit">检索</button>
+            </form>
+            <div class="source-pills"><span>OpenAlex</span><span>arXiv</span><span>Crossref</span><span>Local
+                Library</span></div>
+          </div>
+
+          <div class="discover-toolbar">
+            <div><span class="muted-small" id="discover-count">输入关键词开始检索</span></div>
+            <button class="btn ghost small hidden" id="discover-refresh"><svg class="icon">
+                <use href="#i-refresh" />
+              </svg>重新检索</button>
+          </div>
+          <div class="source-errors hidden" id="discover-errors"></div>
+          <div class="paper-grid" id="discover-results">
+            <div class="discover-placeholder">
+              <div class="radar"><span></span><span></span><span></span><i></i></div>
+              <h3>等待一次检索</h3>
+              <p>试试 “retrieval augmented generation”、“tool calling agent” 或 “long context”。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="evaluation" id="page-evaluation">
+          <div class="page-intro">
+            <div><span class="panel-kicker">EVALUATION LAB</span>
+              <h2>评测实验</h2>
+              <p>用一组固定的中文用例，看看检索、工具调用和回答完成得怎么样，并比较 Chunk、Top-K 与 Prompt。它主要是开发时的回归工具。</p>
+            </div>
+            <div class="page-actions"><button class="btn ghost" id="eval-dataset-btn"><svg class="icon">
+                  <use href="#i-file" />
+                </svg>查看评测集</button></div>
+          </div>
+
+          <div class="eval-kpi-grid" id="eval-kpis">
+            <div class="kpi"><span>Recall@K</span><strong data-kpi="recall">—</strong><small>检索命中率</small></div>
+            <div class="kpi"><span>Tool Accuracy</span><strong data-kpi="tool">—</strong><small>工具选择准确率</small></div>
+            <div class="kpi"><span>Task Success</span><strong data-kpi="success">—</strong><small>任务成功率</small></div>
+            <div class="kpi"><span>Citation Hit</span><strong data-kpi="citation">—</strong><small>引用落地率</small></div>
+          </div>
+
+          <div class="eval-layout">
+            <div class="panel run-panel">
+              <div class="panel-head">
+                <div><span class="panel-kicker">NEW RUN</span>
+                  <h3>发起评测</h3>
+                </div>
+              </div>
+              <form id="eval-form" class="eval-form">
+                <label class="field"><span>实验类型</span><select id="eval-kind">
+                    <option value="full">完整评测（检索 + Agent）</option>
+                    <option value="retrieval">仅检索质量</option>
+                    <option value="agent">仅 Agent 效果</option>
+                    <option value="retrieval_grid">Chunk × Top-K 网格实验</option>
+                    <option value="prompt_grid">Prompt 对比实验</option>
+                  </select></label>
+                <div class="field-row">
+                  <label class="field"><span>用例上限</span><input id="eval-limit" type="number" min="1" max="100"
+                      value="10" /></label>
+                  <label class="field"><span>Top-K</span><input id="eval-topk" type="number" min="1" max="20"
+                      value="6" /></label>
+                </div>
+                <label class="field"><span>Prompt 变体</span><select id="eval-prompt">
+                    <option value="citation_strict">严格引用</option>
+                    <option value="analyst">深度分析</option>
+                    <option value="concise">简洁回答</option>
+                  </select></label>
+                <div class="grid-options hidden" id="grid-options">
+                  <label class="field"><span>Chunk sizes</span><input id="grid-chunks" value="300,500,700" /></label>
+                  <label class="field"><span>Overlaps</span><input id="grid-overlaps" value="50,100" /></label>
+                  <label class="field"><span>Top-K 列表</span><input id="grid-topks" value="3,5,8" /></label>
+                </div>
+                <div class="run-note" id="run-note"><svg class="icon">
+                    <use href="#i-spark" />
+                  </svg>离线 Mock 可以快速跑通指标链路；接入真实模型后，工具调用和任务成功指标更有参考价值。</div>
+                <button type="submit" class="btn primary full" id="run-eval-btn"><svg class="icon">
+                    <use href="#i-chart" />
+                  </svg>开始实验</button>
+              </form>
+              <div class="dataset-mini" id="dataset-mini"><span>评测集</span><strong>— cases</strong></div>
+            </div>
+
+            <div class="panel result-panel" id="eval-result-panel">
+              <div class="panel-head">
+                <div><span class="panel-kicker">RESULT</span>
+                  <h3 id="eval-result-title">最近结果</h3>
+                </div>
+                <div class="panel-actions"><span class="badge soft" id="eval-status-badge">待运行</span><button
+                    class="icon-btn small hidden" id="refresh-eval"><svg class="icon">
+                      <use href="#i-refresh" />
+                    </svg></button></div>
+              </div>
+              <div id="eval-result-body">
+                <div class="eval-empty">
+                  <div class="gauge"><span>R</span></div>
+                  <h3>还没有评测结果</h3>
+                  <p>选择左侧实验类型并运行。首次使用建议先导入示例文献库。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel history-panel">
+            <div class="panel-head">
+              <div><span class="panel-kicker">HISTORY</span>
+                <h3>实验记录</h3>
+              </div><button class="text-btn" id="refresh-runs"><svg class="icon">
+                  <use href="#i-refresh" />
+                </svg>刷新</button>
+            </div>
+            <div id="eval-history" class="run-history">
+              <div class="empty-inline">暂无记录</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- 设置 -->
+  <div class="modal-layer hidden" id="settings-modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="settings-modal"></div>
+    <div class="modal settings-modal">
+      <div class="modal-head">
+        <div><span class="panel-kicker">SYSTEM</span>
+          <h2>配置与说明</h2>
+        </div><button class="icon-btn" data-close="settings-modal"><svg class="icon">
+            <use href="#i-close" />
+          </svg></button>
+      </div>
+      <div class="settings-tabs">
+        <button class="tab active" data-tab="connect">连接状态</button>
+        <button class="tab" data-tab="setup">接入模型（可选）</button>
+        <button class="tab" data-tab="about">关于文澜</button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-tab active" data-tab-panel="connect">
+          <div class="settings-grid" id="settings-status"></div>
+          <div class="callout"><svg class="icon">
+              <use href="#i-spark" />
+            </svg>
+            <div><strong>离线演示模式</strong>
+              <p>未配置 Key 时，系统使用本地哈希向量与可预测的 Mock Agent，仍可体验检索、引用与评测流程；适合先本地试用，不必一上来就申请 API。</p>
+            </div>
+          </div>
+        </div>
+        <div class="settings-tab" data-tab-panel="setup">
+          <p class="settings-lead">默认不配置 Key 也能离线体验。需要更自然的回答时，复制 <code>.env.example</code> 为 <code>.env</code>，填入任一国内可用的
+            OpenAI 兼容服务，然后重启。</p>
+          <div class="provider-grid" id="provider-grid"></div>
+          <div class="code-block"><span>终端</span>
+            <pre>copy .env.example .env
+notepad .env
+.venv\Scripts\python -m app.cli serve</pre>
+          </div>
+          <p class="muted-small">Embedding 可以用硅基流动 <code>BAAI/bge-m3</code> 或百炼 <code>text-embedding-v4</code>；LLM 可以用
+            DeepSeek 或通义千问。修改 Embedding 维度后需要重建索引。</p>
+        </div>
+        <div class="settings-tab" data-tab-panel="about">
+          <div class="about-mark"><svg viewBox="0 0 40 40">
+              <path d="M6 25c5-10 10-10 14 0s9 10 14 0" />
+              <path d="M6 17c5-9 10-9 14 0s9 9 14 0" />
+              <circle cx="30.5" cy="10.5" r="2.2" />
+            </svg></div>
+          <h3>文澜 WenLan <span id="about-version">v0.1.0</span></h3>
+          <p>一个本地部署的文献问答与 RAG 评测项目：FastAPI + Tool Calling + pgvector。数据和 API Key 默认只保存在本机。</p>
+          <div class="about-links"><a href="/api/docs" target="_blank" rel="noopener">API 文档<svg class="icon">
+                <use href="#i-external" />
+              </svg></a><a href="/api/health" target="_blank" rel="noopener">健康检查<svg class="icon">
+                <use href="#i-external" />
+              </svg></a></div>
+          <div class="about-meta"><span>Python
+              3.12</span><span>pgvector</span><span>OpenAI-compatible</span><span>MIT</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文献详情 -->
+  <div class="modal-layer hidden" id="paper-modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="paper-modal"></div>
+    <div class="modal paper-modal">
+      <div class="modal-head">
+        <div><span class="panel-kicker">PAPER</span>
+          <h2 id="paper-modal-title">论文详情</h2>
+        </div><button class="icon-btn" data-close="paper-modal"><svg class="icon">
+            <use href="#i-close" />
+          </svg></button>
+      </div>
+      <div class="paper-modal-body" id="paper-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- 评测集 -->
+  <div class="modal-layer hidden" id="dataset-modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="dataset-modal"></div>
+    <div class="modal dataset-modal">
+      <div class="modal-head">
+        <div><span class="panel-kicker">DATASET</span>
+          <h2>评测集</h2>
+        </div><button class="icon-btn" data-close="dataset-modal"><svg class="icon">
+            <use href="#i-close" />
+          </svg></button>
+      </div>
+      <div class="dataset-body" id="dataset-body"></div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+  <div class="loading-overlay hidden" id="loading-overlay">
+    <div class="loader-orb"></div>
+    <p id="loading-text">正在处理…</p>
+  </div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+
+</html>

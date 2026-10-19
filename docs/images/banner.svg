@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">文澜 WenLan</title>
+  <desc id="desc">文澜：本地文献问答与 RAG 评测。解析 PDF、建立向量索引，通过 Tool Calling 检索原文并生成带页码引用的回答。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1218"/>
+      <stop offset="0.55" stop-color="#0d1c24"/>
+      <stop offset="1" stop-color="#112a2d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#45d6c2"/>
+      <stop offset="1" stop-color="#76a7ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#45d6c2" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#45d6c2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#b9e2dd" stroke-opacity="0.045"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="360" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="360" rx="24" fill="url(#glow)"/>
+  <rect width="1200" height="360" rx="24" fill="url(#grid)"/>
+  <rect x="0.5" y="0.5" width="1199" height="359" rx="23.5" fill="none" stroke="#b9e2dd" stroke-opacity="0.16"/>
+
+  <g transform="translate(64 58)">
+    <rect width="56" height="56" rx="15" fill="#45d6c2" fill-opacity="0.1" stroke="#45d6c2" stroke-opacity="0.38"/>
+    <path d="M12 33c6.5-13 13-13 19 0s12.5 13 19 0M12 22c6.5-12 13-12 19 0s12.5 12 19 0" fill="none" stroke="#45d6c2" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="44" cy="14" r="3" fill="#f0b55f"/>
+  </g>
+  <g transform="translate(140 56)">
+    <text x="0" y="28" fill="#f0f7f5" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-size="28" letter-spacing="5">文澜</text>
+    <text x="2" y="52" fill="#8fa9ac" font-family="'Cascadia Code',Consolas,monospace" font-size="11" letter-spacing="3.2">WENLAN · LITERATURE RAG</text>
+  </g>
+
+  <text x="64" y="176" fill="#f0f7f5" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-size="42" letter-spacing="1">本地文献问答与 RAG 评测</text>
+  <text x="64" y="220" fill="#a9bfc1" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="18">解析 PDF、建立向量索引，通过 Tool Calling 检索原文并生成带页码引用的回答。</text>
+  <text x="64" y="250" fill="#7e979a" font-family="'Noto Sans SC','Microsoft YaHei',sans-serif" font-size="15">默认离线可运行；也支持 DeepSeek、百炼、硅基流动等 OpenAI 兼容服务。</text>
+
+  <g font-family="'Cascadia Code',Consolas,monospace" font-size="11" fill="#9db2b4">
+    <rect x="64" y="286" width="126" height="28" rx="14" fill="#45d6c2" fill-opacity="0.08" stroke="#45d6c2" stroke-opacity="0.24"/>
+    <text x="84" y="305" fill="#45d6c2">Python · FastAPI</text>
+    <rect x="202" y="286" width="120" height="28" rx="14" fill="#76a7ff" fill-opacity="0.08" stroke="#76a7ff" stroke-opacity="0.22"/>
+    <text x="220" y="305" fill="#8db8ff">Tool Calling</text>
+    <rect x="334" y="286" width="138" height="28" rx="14" fill="#ad9bff" fill-opacity="0.08" stroke="#ad9bff" stroke-opacity="0.22"/>
+    <text x="352" y="305" fill="#c1b5ff">pgvector RAG</text>
+    <rect x="484" y="286" width="118" height="28" rx="14" fill="#f0b55f" fill-opacity="0.08" stroke="#f0b55f" stroke-opacity="0.24"/>
+    <text x="504" y="305" fill="#f0c07a">Evaluation</text>
+  </g>
+
+  <g transform="translate(910 94)" fill="none" stroke="#45d6c2" stroke-opacity="0.28">
+    <circle cx="115" cy="95" r="96"/>
+    <circle cx="115" cy="95" r="66" stroke-dasharray="3 7"/>
+    <circle cx="115" cy="95" r="38"/>
+    <circle cx="115" cy="95" r="12" fill="#45d6c2" fill-opacity="0.18" stroke-opacity="0.7"/>
+  </g>
+  <text x="1025" y="193" fill="#45d6c2" font-family="'Cascadia Code',Consolas,monospace" font-size="11" letter-spacing="2" text-anchor="middle">RAG</text>
+  <g fill="#8fa9ac" font-family="'Cascadia Code',Consolas,monospace" font-size="9" text-anchor="middle">
+    <text x="1025" y="84">PDF</text>
+    <text x="1140" y="198">Embedding</text>
+    <text x="1025" y="322">Citation</text>
+  </g>
+</svg>

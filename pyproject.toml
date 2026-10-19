@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wenlan"
+version = "0.1.0"
+description = "文澜 · 基于 FastAPI、Tool Calling 与 pgvector RAG 的文献问答与评测项目"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "WenLan" }]
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "uvicorn[standard]>=0.30,<1.0",
+  "pydantic>=2.8,<3.0",
+  "pydantic-settings>=2.4,<3.0",
+  "sqlalchemy>=2.0.30,<3.0",
+  "psycopg[binary]>=3.2,<4.0",
+  "pgvector>=0.3,<1.0",
+  "pgserver>=0.1.4,<0.2; platform_system == 'Windows' or platform_system == 'Linux' or platform_system == 'Darwin'",
+  "httpx>=0.27,<1.0",
+  "pymupdf>=1.24,<2.0",
+  "python-multipart>=0.0.9,<1.0",
+  "numpy>=1.26,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2,<9.0",
+  "pytest-cov>=5.0,<7.0",
+  "ruff>=0.6,<1.0",
+]
+
+[project.scripts]
+wenlan = "app.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+app = ["static/*", "templates/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+  "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008", "UP017"]
