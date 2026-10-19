@@ -112,8 +112,6 @@ python -m app.cli init-db
 python -m app.cli serve
 ```
 
-打开 <http://127.0.0.1:8000>。
-
 也可以运行：
 
 ```bat
@@ -234,7 +232,6 @@ python -m app.cli reset-db --yes          # 删除并重建所有表（危险）
 
 ## API
 
-交互式文档：<http://127.0.0.1:8000/api/docs>
 
 | Method | Path | 说明 |
 | --- | --- | --- |
